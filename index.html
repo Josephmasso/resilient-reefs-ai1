@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accentecx: Pioneering AI for Marine & National Security</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F8F8;
+            color: #333333;
+        }
+        .header-bg {
+            background-color: #003B46;
+        }
+        .primary-text {
+            color: #07575B;
+        }
+        .secondary-bg {
+            background-color: #66A5AD;
+        }
+        .accent-text {
+            color: #C4DFE6;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .accordion-header {
+            background-color: #66A5AD;
+            color: white;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-content {
+            background-color: #E0F2F7;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: none;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-header.active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .accordion-content.active {
+            display: block;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 700px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #07575B;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Chosen Palette: Warm Neutrals with Brilliant Blues Accents -->
+    <!-- Application Structure Plan: The SPA is structured thematically with distinct, scrollable sections: Hero, About Us, Team, Pilot Project, Partnerships, Tech, Marketing, Future Vision, Contact. This linear flow tells Accentecx's story from mission to IPO, chosen for intuitive user understanding and narrative coherence. Interactive elements like accordions and AI summaries are integrated within sections to manage detail and enhance engagement, preventing information overload on a single page. -->
+    <!-- Visualization & Content Choices:
+    - Hero Section: Textual. Goal: Inform. Justification: Immediate impact. Method: HTML/CSS.
+    - About Us: Textual. Goal: Inform. Justification: Narrative storytelling. Method: HTML/CSS.
+    - Our Core Team: Grid of cards with text. Goal: Organize, Inform. Justification: Clear presentation of key individuals. Method: HTML/CSS.
+    - Pilot Project Data Breakdown: Doughnut charts for Underwater and Above-Water data types. Goal: Compare, Inform. Interaction: Tooltips on hover. Justification: Visually represents distribution of data types. Method: Chart.js.
+    - Annotation Types: Bulleted list with descriptions. Goal: Inform. Justification: Clear enumeration of technical tasks. Method: HTML/CSS.
+    - Training Hub: Accordion for modules. Goal: Organize, Inform. Interaction: Click to expand/collapse. Justification: Presents detailed curriculum without overwhelming. Method: HTML/CSS/JS.
+    - Strategic Partnerships: Grid of cards with text. Goal: Organize, Inform. Justification: Highlights key collaborations. Method: HTML/CSS.
+    - Technology & Infrastructure: Text and Unicode icons. Goal: Inform. Justification: Quick overview of tech stack. Method: HTML/CSS.
+    - Marketing Blueprint: Accordion for phases with AI summary button. Goal: Organize, Inform. Interaction: Click to expand/collapse, button to trigger AI summary. Justification: Presents phased strategy interactively, adds AI "wow" factor. Method: HTML/CSS/JS, Gemini API.
+    - Future Vision & Funding Roadmap: Textual summary. Goal: Inform. Justification: Conveys long-term ambition. Method: HTML/CSS.
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="header-bg text-white p-8 text-center">
+        <h1 class="text-5xl font-extrabold mb-3">Accentecx</h1>
+        <p class="text-xl accent-text">Pioneering AI Data for a Resilient Future</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <section id="about" class="my-12 text-center">
+            <h2 class="text-4xl font-bold primary-text mb-6">About Accentecx</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed">
+                Accentecx is a 60% Filipino-owned, Iloilo-based AI data annotation and evaluation company, dedicated to fostering a student-led workforce development hub in partnership with the University of the Philippines Visayas. Our unique strategy focuses on critical sectors: marine, agriculture, and responsible AI, with future expansion into defense. We believe in harnessing local talent to build global AI solutions for a more sustainable and secure future.
+            </p>
+        </section>
+
+        <section id="team" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">Our Core Leadership</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card text-center">
+                    <div class="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-center justify-center text-5xl mb-4 text-gray-500">👤</div>
+                    <h3 class="text-2xl font-bold primary-text mb-2">You</h3>
+                    <p class="text-lg font-semibold">Chairman of the Board</p>
+                    <p class="text-sm text-gray-600 mt-2">Strategic Vision, Global Perspective, Fundraising Leadership.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-center justify-center text-5xl mb-4 text-gray-500">👩‍💼</div>
+                    <h3 class="text-2xl font-bold primary-text mb-2">Your Wife</h3>
+                    <p class="text-lg font-semibold">President & CEO</p>
+                    <p class="text-sm text-gray-600 mt-2">Operational Excellence, Corporate Credibility, Day-to-Day Management.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-center justify-center text-5xl mb-4 text-gray-500">👨‍🔬</div>
+                    <h3 class="text-2xl font-bold primary-text mb-2">Dr. Christian</h3>
+                    <p class="text-lg font-semibold">Strategic Advisor (Academia)</p>
+                    <p class="text-sm text-gray-600 mt-2">Academic Credibility, UP System Network, Curriculum Guidance.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-center justify-center text-5xl mb-4 text-gray-500">🌿</div>
+                    <h3 class="text-2xl font-bold primary-text mb-2">Dr. Matthias</h3>
+                    <p class="text-lg font-semibold">Strategic Advisor (Domain)</p>
+                    <p class="text-sm text-gray-600 mt-2">Marine Conservation Expertise, Data Sourcing, Scientific Validation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pilot-project" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">The Resilient Reefs AI Pilot Project</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                Our flagship pilot project, "Resilient Reefs AI," aims to create the world's largest open-source, dual-purpose dataset of annotated marine images and videos. This initiative will provide critical data for both climate research and national security, demonstrating our unique capabilities and impact.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-center">
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-2">10M+</h3>
+                    <p class="text-lg">Total Annotations</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-2">100%</h3>
+                    <p class="text-lg">Open Source</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-2">6 Months</h3>
+                    <p class="text-lg">Project Timeline</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-4 text-center">Underwater Data Collection</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="underwaterChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-center text-gray-600">Focuses on ecological health, identifying coral types, marine fauna, and debris.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-4 text-center">Above-Water Data Collection</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="abovewaterChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-center text-gray-600">Captures maritime activities, vessel types, and coastal environmental features.</p>
+                </div>
+            </div>
+
+            <h3 class="text-3xl font-bold primary-text text-center mb-6">Our Annotation Expertise</h3>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                We employ a range of precise annotation types to extract maximum value from our diverse dataset, ensuring accuracy and utility for advanced AI models.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🎯</div>
+                    <h4 class="text-xl font-semibold primary-text mb-2">Object Detection</h4>
+                    <p class="text-sm text-gray-600">Bounding boxes for marine fauna, vessels, and debris.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🗺️</div>
+                    <h4 class="text-xl font-semibold primary-text mb-2">Semantic Segmentation</h4>
+                    <p class="text-sm text-gray-600">Pixel-perfect polygons for coral health, mangroves, and coastal features.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🚶‍♀️</div>
+                    <h4 class="text-xl font-semibold primary-text mb-2">Object Tracking</h4>
+                    <p class="text-sm text-gray-600">Following movement of marine life and vessels in videos.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🚩</div>
+                    <h4 class="text-xl font-semibold primary-text mb-2">Event Tagging</h4>
+                    <p class="text-sm text-gray-600">Labeling specific activities like illegal fishing in video clips.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="training-hub" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">The Accentecx Training Hub</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                Our intensive 4-week training program transforms students into world-class data specialists. It combines foundational annotation skills with deep domain expertise, ensuring high-quality output and a sustainable talent pipeline.
+            </p>
+            <div class="card p-6">
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="week1">
+                        <h3 class="text-xl font-semibold">Week 1: Foundations & Tool Mastery</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="week1">
+                        <p class="font-bold mb-2">Courses:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Project Introduction & Ethics</li>
+                            <li>Annotation Tool Setup (Label Studio, CVAT)</li>
+                            <li>Annotation Types Overview</li>
+                        </ul>
+                        <p class="font-bold mb-2">Practice:</p>
+                        <ul class="list-disc list-inside">
+                            <li>50 bounding box images, 25 segmentation images</li>
+                            <li>5 video object tracking, 5 video event tagging</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="week2">
+                        <h3 class="text-xl font-semibold">Week 2: Domain-Specific Expertise</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="week2">
+                        <p class="font-bold mb-2">Courses:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Marine Life Identification</li>
+                            <li>Coral Health & Ecology</li>
+                            <li>Maritime Domain Awareness</li>
+                        </ul>
+                        <p class="font-bold mb-2">Practice:</p>
+                        <ul class="list-disc list-inside">
+                            <li>50 expert-guided images, 10 expert-guided videos</li>
+                            <li>Comprehensive Annotation Guideline Review</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="week3">
+                        <h3 class="text-xl font-semibold">Week 3: Quality Control & Reviewer Training</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="week3">
+                        <p class="font-bold mb-2">Courses:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>The Reviewer's Role & Error Tracking</li>
+                            <li>Inter-Annotator Agreement (IAA)</li>
+                        </ul>
+                        <p class="font-bold mb-2">Practice:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Error identification in pre-annotated datasets</li>
+                            <li>Constructive feedback writing simulation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="week4">
+                        <h3 class="text-xl font-semibold">Week 4: Project Simulation & Certification</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="week4">
+                        <p class="font-bold mb-2">Courses:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>The QA Specialist Role</li>
+                            <li>Full Project Workflow Simulation</li>
+                        </ul>
+                        <p class="font-bold mb-2">Assessment & Certification:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Individual Performance Review</li>
+                            <li>Capstone Project</li>
+                            <li>Certified Accentecx Data Specialist (co-branded with UPV)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="partnerships" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">Our Strategic Partnerships</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                Our collaborative model with leading institutions and organizations is the cornerstone of our impact and credibility. These partnerships enable us to leverage expertise, access vital data, and ensure our work serves a greater purpose.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🎓</div>
+                    <h3 class="text-2xl font-semibold primary-text mb-2">UP Visayas</h3>
+                    <p class="text-lg font-semibold">Academic Partner & Talent Pipeline</p>
+                    <p class="text-sm text-gray-600 mt-2">Provides student workforce, academic validation, and institutional support for our training hub.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🌊</div>
+                    <h3 class="text-2xl font-semibold primary-text mb-2">Sulu Garden Foundation</h3>
+                    <p class="text-lg font-semibold">Domain Expertise & Data Source</p>
+                    <p class="text-sm text-gray-600 mt-2">Offers invaluable raw marine data and scientific guidance for the "Resilient Reefs AI" project.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🛡️</div>
+                    <h3 class="text-2xl font-semibold primary-text mb-2">Philippine Army</h3>
+                    <p class="text-lg font-semibold">Strategic Validator & Future Client</p>
+                    <p class="text-sm text-gray-600 mt-2">Provides high-level endorsement, strategic input for national security relevance, and potential for future defense contracts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="technology" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">Technology & Infrastructure</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                We utilize robust, open-source tools hosted on a secure, cost-effective cloud infrastructure to ensure scalability, data integrity, and operational efficiency for all our projects.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">☁️</div>
+                    <h3 class="text-2xl font-semibold primary-text mb-2">Hetzner Cloud</h3>
+                    <p class="text-lg font-semibold">High-Performance, Cost-Effective Hosting</p>
+                    <p class="text-sm text-gray-600 mt-2">CPX41 server (8 vCPUs, 16GB RAM) in Singapore for low-latency operations. BX11 Storage Box (1TB) for scalable data storage.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 primary-text">🛠️</div>
+                    <h3 class="text-2xl font-semibold primary-text mb-2">Open-Source Tools</h3>
+                    <p class="text-lg font-semibold">Flexible & Customizable Annotation</p>
+                    <p class="text-sm text-gray-600 mt-2">Leveraging Label Studio for image and semantic segmentation, and CVAT for video tracking and event tagging.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="financials" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">Financials & Investment</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                Our lean financial model prioritizes capital efficiency, leveraging grants and strategic partnerships for initial growth, paving the way for significant commercial scaling.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-4">Company Registration Budget</h3>
+                    <ul class="list-disc list-inside text-lg">
+                        <li>**Total Budget:** ₱20,000 (~$360)</li>
+                        <li>Includes SEC fees, paid-up capital (₱6,250), local permits, BIR fees, and initial lawyer's fees.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold primary-text mb-4">Pilot Project Budget (6 Months)</h3>
+                    <ul class="list-disc list-inside text-lg">
+                        <li>**Total Projected Cost:** ₱2.9M - ₱3.2M (~$53,000 - $58,000)</li>
+                        <li>Covers one-time setup (hardware, legal), recurring infrastructure, student stipends, project management, and data acquisition.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="marketing" class="my-12">
+            <h2 class="text-4xl font-bold primary-text text-center mb-8">Our Ultimate Marketing Blueprint</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed text-center mb-8">
+                Our phased marketing strategy is designed to build momentum, leverage our unique narrative, and create a viral movement around our mission and impact, leading to sustained growth and market dominance.
+            </p>
+            <div class="card p-6">
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="marketing-phase1">
+                        <h3 class="text-xl font-semibold">Phase 1: Foundation & Pivot (Months 1-3)</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="marketing-phase1">
+                        <p class="font-bold mb-2">Objectives:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Establish company mission</li>
+                            <li>Generate intrigue without a product</li>
+                            <li>Target immediate network, UPV students, local news</li>
+                        </ul>
+                        <p class="font-bold mb-2">Key Actions:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Personal LinkedIn pivot announcement (Your Wife)</li>
+                            <li>Website launch & Team Reveal blog/video</li>
+                            <li>Student-annotator recruitment call-to-arms</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="marketing-phase2">
+                        <h3 class="text-xl font-semibold">Phase 2: Pilot Project & Storytelling (Months 4-12)</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="marketing-phase2">
+                        <p class="font-bold mb-2">Objectives:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Execute pilot, turn into content factory</li>
+                            <li>Target global AI/ML community, environmental researchers, national media</li>
+                        </ul>
+                        <p class="font-bold mb-2">Key Actions:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Weekly behind-the-scenes content (social media)</li>
+                            <li>Mid-project teaser dataset release (Kaggle)</li>
+                            <li>Full dataset launch & media boom event (Month 12)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="marketing-phase3">
+                        <h3 class="text-xl font-semibold">Phase 3: Commercialization & Scaling (Months 13-24)</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="marketing-phase3">
+                        <p class="font-bold mb-2">Objectives:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Leverage pilot success to attract clients and investors</li>
+                            <li>Target enterprise clients, VCs, and accelerators</li>
+                        </ul>
+                        <p class="font-bold mb-2">Key Actions:</p>
+                        <ul class="list-disc list-inside">
+                            <li>First commercial client announcement & case study</li>
+                            <li>Thought leadership content (articles, whitepapers)</li>
+                            <li>Aggressive VC pitching based on proven model</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" data-target="marketing-phase4">
+                        <h3 class="text-xl font-semibold">Phase 4: Expansion & Market Dominance (Months 25-60)</h3>
+                        <span class="text-2xl">+</span>
+                    </div>
+                    <div class="accordion-content" id="marketing-phase4">
+                        <p class="font-bold mb-2">Objectives:</p>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Scale business, enter new markets, prepare for exit</li>
+                            <li>Target large enterprise, government, investment community</li>
+                        </ul>
+                        <p class="font-bold mb-2">Key Actions:</p>
+                        <ul class="list-disc list-inside">
+                            <li>High-profile PR campaigns, new partnerships, major contracts</li>
+                            <li>Present at international AI and defense conferences</li>
+                            <li>Continuous investor relations for Series B and IPO</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future-vision" class="my-12 text-center">
+            <h2 class="text-4xl font-bold primary-text mb-6">Future Vision & Funding Roadmap</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed">
+                Accentecx's journey is mapped from a grant-funded pilot to a commercially scalable enterprise, culminating in a potential Initial Public Offering (IPO). This strategic progression ensures sustainable growth, maximizes impact, and delivers significant value to all stakeholders. Our focus remains on responsible AI, empowering local talent, and addressing critical global challenges in marine health, agriculture, and national security.
+            </p>
+        </section>
+
+        <section id="legal-compliance" class="my-12 text-center">
+            <h2 class="text-4xl font-bold primary-text mb-6">Legal & Compliance</h2>
+            <p class="max-w-4xl mx-auto text-lg leading-relaxed">
+                Accentecx is structured as a 60% Filipino-owned, 40% foreign-owned domestic stock corporation. This ensures compliance with Philippine foreign ownership laws. All operations adhere to the Revised Corporation Code of the Philippines and relevant government regulations. Intellectual Property (IP) generated from commercial projects will belong to our clients, while IP from open-source initiatives will be clearly licensed for public benefit. Our team's roles are meticulously defined to avoid conflicts of interest and ensure full legal compliance.
+            </p>
+        </section>
+
+        <section id="contact" class="my-12 text-center">
+            <h2 class="text-4xl font-bold primary-text mb-6">Contact Us</h2>
+            <p class="text-lg mb-4">Interested in partnering with Accentecx or learning more about our mission?</p>
+            <a href="mailto:info@accentecx.com" class="inline-block bg-[#07575B] hover:bg-[#003B46] text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300">
+                Get in Touch
+            </a>
+        </section>
+    </main>
+
+    <footer class="header-bg text-white p-4 text-center mt-12">
+        <p>&copy; 2025 Accentecx, Inc. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            const wrapLabel = (label) => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    for (const word of words) {
+                        if ((currentLine + word).length > 16) {
+                            lines.push(currentLine.trim());
+                            currentLine = '';
+                        }
+                        currentLine += word + ' ';
+                    }
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+
+            const underwaterData = {
+                labels: ['Coral Reefs', 'Marine Fauna', 'Marine Debris', 'Behavioral Videos'].map(wrapLabel),
+                datasets: [{
+                    label: 'Number of Items',
+                    data: [500000, 2000000, 500000, 5000],
+                    backgroundColor: [
+                        '#07575B',
+                        '#66A5AD',
+                        '#C4DFE6',
+                        '#003B46'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            };
+
+            const abovewaterData = {
+                labels: ['Fishing Vessels', 'Maritime Vessels', 'Coastal & Environmental', 'Activity Recognition Videos'].map(wrapLabel),
+                datasets: [{
+                    label: 'Number of Items',
+                    data: [2500000, 2000000, 2500000, 1000],
+                    backgroundColor: [
+                        '#07575B',
+                        '#66A5AD',
+                        '#C4DFE6',
+                        '#003B46'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            };
+
+            const chartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            setTimeout(() => {
+                new Chart(document.getElementById('underwaterChart'), {
+                    type: 'doughnut',
+                    data: underwaterData,
+                    options: chartOptions
+                });
+
+                new Chart(document.getElementById('abovewaterChart'), {
+                    type: 'doughnut',
+                    data: abovewaterData,
+                    options: chartOptions
+                });
+            }, 0);
+
+            const phase1ChartData = {
+                labels: ['Social Media Engagement', 'Website Sign-ups', 'Student Applications'].map(wrapLabel),
+                datasets: [{
+                    label: 'Key Metrics',
+                    data: [70, 50, 100],
+                    backgroundColor: '#07575B',
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            };
+            const phase2ChartData = {
+                labels: ['Kaggle Downloads', 'Media Mentions', 'Grant Approvals'].map(wrapLabel),
+                datasets: [{
+                    label: 'Key Metrics',
+                    data: [80, 60, 40],
+                    backgroundColor: '#66A5AD',
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            };
+            const phase3ChartData = {
+                labels: ['MRR Growth', 'VC Funding', 'Client Testimonials'].map(wrapLabel),
+                datasets: [{
+                    label: 'Key Metrics',
+                    data: [90, 70, 80],
+                    backgroundColor: '#07575B',
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            };
+            const phase4ChartData = {
+                labels: ['Revenue Growth', 'New Countries Entered', 'Successful Acquisitions'].map(wrapLabel),
+                datasets: [{
+                    label: 'Key Metrics',
+                    data: [95, 75, 50],
+                    backgroundColor: '#66A5AD',
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            };
+
+            setTimeout(() => {
+                new Chart(document.getElementById('phase1Chart'), {
+                    type: 'bar',
+                    data: phase1ChartData,
+                    options: chartOptions
+                });
+                new Chart(document.getElementById('phase2Chart'), {
+                    type: 'bar',
+                    data: phase2ChartData,
+                    options: chartOptions
+                });
+                new Chart(document.getElementById('phase3Chart'), {
+                    type: 'bar',
+                    data: phase3ChartData,
+                    options: chartOptions
+                });
+                new Chart(document.getElementById('phase4Chart'), {
+                    type: 'bar',
+                    data: phase4ChartData,
+                    options: chartOptions
+                });
+            }, 0);
+
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = document.getElementById(header.dataset.target);
+                    const isActive = content.classList.contains('active');
+
+                    document.querySelectorAll('.accordion-content').forEach(item => {
+                        item.classList.remove('active');
+                        item.style.maxHeight = null;
+                    });
+                    document.querySelectorAll('.accordion-header').forEach(item => {
+                        item.classList.remove('active');
+                        item.querySelector('span').textContent = '+';
+                    });
+
+                    if (!isActive) {
+                        content.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        header.classList.add('active');
+                        header.querySelector('span').textContent = '-';
+                    }
+                });
+            });
+        };
+    </script>
+</body>
+</html>
